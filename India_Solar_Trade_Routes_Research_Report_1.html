@@ -1,0 +1,2906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Solar Trade — Routes, Volumes & Carrier Contracts</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --bg: #FAF6EE;
+  --bg-alt: #F2EDE1;
+  --surface: #FFFFFF;
+  --surface-warm: #FBF7EE;
+  --ink: #0E1F2C;
+  --ink-2: #324554;
+  --ink-3: #6B7A85;
+  --ink-muted: #9BA4AB;
+  --rust: #B94A0E;
+  --rust-soft: #E58454;
+  --amber: #C68A2C;
+  --teal: #1F5A6F;
+  --sage: #5C7C5F;
+  --crimson: #94303B;
+  --border: #E0D5BD;
+  --border-soft: #ECE4D0;
+  --shadow-sm: 0 1px 2px rgba(14,31,44,0.04), 0 1px 3px rgba(14,31,44,0.06);
+  --shadow-md: 0 4px 8px rgba(14,31,44,0.04), 0 8px 16px rgba(14,31,44,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-weight: 400;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.serif { font-family: 'Fraunces', Georgia, serif; font-feature-settings: "ss01", "ss02"; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+
+/* ============ Header ============ */
+header.masthead {
+  background: var(--ink);
+  color: #F2EDE1;
+  padding: 4rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid var(--rust);
+}
+
+header.masthead::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(circle at 80% 30%, rgba(198, 138, 44, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 60% 80%, rgba(185, 74, 14, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.masthead-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rust-soft);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--rust-soft);
+}
+
+h1.title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  font-variation-settings: "opsz" 144;
+  color: #FAF6EE;
+}
+
+h1.title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--rust-soft);
+}
+
+.lede {
+  font-size: 1.15rem;
+  max-width: 720px;
+  color: #D8CCB2;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+.meta-row {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.meta-row div {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+.meta-row div strong {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #F2EDE1;
+  margin-top: 0.25rem;
+  font-style: normal;
+  letter-spacing: -0.01em;
+}
+
+/* ============ Tab Nav ============ */
+nav.tabs {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(250, 246, 238, 0.96);
+}
+
+.tabs-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs-inner::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1.1rem 0;
+  margin-right: 2.25rem;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-btn .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.tab-btn:hover { color: var(--ink); }
+
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--rust);
+}
+.tab-btn.active .num { color: var(--rust); }
+
+/* ============ Main Content ============ */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+}
+
+.tab-panel { display: none; animation: fadeIn 0.4s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ Typography ============ */
+h2.section-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-variation-settings: "opsz" 144;
+}
+h2.section-title em { color: var(--rust); font-style: italic; font-weight: 300; }
+
+.section-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.section-intro {
+  font-size: 1.1rem;
+  max-width: 720px;
+  color: var(--ink-2);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  margin: 2.5rem 0 1rem;
+  color: var(--ink);
+}
+
+h4 {
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 1.5rem 0 0.75rem;
+}
+
+p { margin-bottom: 1rem; color: var(--ink-2); }
+p strong { color: var(--ink); font-weight: 600; }
+
+/* ============ Stat Cards ============ */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 1.5rem 1.5rem 1.75rem;
+  position: relative;
+}
+
+.stat-card .stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.75rem;
+}
+
+.stat-card .stat-value {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 2.3rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variation-settings: "opsz" 144;
+}
+
+.stat-card .stat-value .unit {
+  font-size: 1.1rem;
+  color: var(--ink-3);
+  margin-left: 0.25rem;
+  font-weight: 400;
+}
+
+.stat-card .stat-context {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+.stat-card.accent { border-top: 3px solid var(--rust); }
+.stat-card.teal { border-top: 3px solid var(--teal); }
+.stat-card.amber { border-top: 3px solid var(--amber); }
+.stat-card.sage { border-top: 3px solid var(--sage); }
+
+/* ============ Chart Containers ============ */
+.chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.chart-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.chart-subtitle {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+.chart-wrap { position: relative; height: 320px; }
+.chart-wrap.tall { height: 420px; }
+.chart-wrap.short { height: 240px; }
+
+.chart-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 768px) { .chart-grid-2 { grid-template-columns: 1fr; } }
+
+/* ============ Pull Quotes & Callouts ============ */
+.pull-quote {
+  border-left: 3px solid var(--rust);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2rem 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.callout {
+  background: var(--surface-warm);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.94rem;
+  color: var(--ink-2);
+}
+
+.callout strong { color: var(--ink); }
+
+.callout.warning { border-left-color: var(--crimson); background: #FBF3F0; border-color: #E8D2CC; }
+.callout.info { border-left-color: var(--teal); background: #EEF4F6; border-color: #C8DBE0; }
+
+/* ============ Tables ============ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 2rem;
+  background: var(--surface);
+  font-size: 0.92rem;
+}
+
+.data-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-alt);
+}
+
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--ink-2);
+  vertical-align: top;
+}
+
+.data-table td.numeric { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover { background: var(--bg-alt); }
+
+/* ============ Route Cards ============ */
+.route-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.route-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1.75rem;
+  align-items: start;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.route-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.route-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: 4rem;
+  line-height: 0.9;
+  color: var(--rust);
+  font-variation-settings: "opsz" 144;
+}
+
+.route-card .route-path {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.route-card .route-path .arrow { color: var(--rust); margin: 0 0.4rem; font-weight: 300; }
+
+.route-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rust);
+  background: rgba(185, 74, 14, 0.08);
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+}
+
+.route-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem 1.5rem;
+  margin: 1rem 0 1.25rem;
+  padding: 1rem 0;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+}
+
+.route-metric .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.2rem;
+}
+.route-metric .value {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.route-card .route-detail {
+  font-size: 0.94rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.route-card .route-risk {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .route-card { grid-template-columns: 1fr; padding: 1.5rem; }
+  .route-num { font-size: 3rem; }
+}
+
+/* ============ Policy Timeline ============ */
+.timeline {
+  position: relative;
+  margin: 2rem 0 3rem;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.66rem;
+  top: 0.45rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+.timeline-item.muted::before { background: var(--ink-muted); }
+
+.timeline-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.timeline-item.muted .timeline-date { color: var(--ink-muted); }
+
+.timeline-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* ============ Product Accordion ============ */
+.product-accordion { margin-top: 2rem; }
+
+.product-item {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.product-header {
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: background 0.2s;
+}
+
+.product-header:hover { background: var(--surface-warm); }
+
+.product-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex: 1;
+}
+
+.product-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.product-hs {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  padding: 0.15rem 0.5rem;
+  background: var(--bg-alt);
+  border-radius: 2px;
+}
+
+.product-value {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--rust);
+  font-weight: 500;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.product-toggle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  color: var(--ink-3);
+  transition: transform 0.2s;
+}
+
+.product-item.open .product-toggle { transform: rotate(45deg); }
+
+.product-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.product-item.open .product-body { max-height: 2000px; }
+
+.product-body-inner {
+  padding: 0 1.5rem 1.75rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+/* ============ Two-col layout for products ============ */
+.product-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+@media (max-width: 720px) { .product-cols { grid-template-columns: 1fr; } }
+
+.fact-list {
+  list-style: none;
+  padding: 0;
+}
+.fact-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1rem;
+  font-size: 0.88rem;
+}
+.fact-list li:last-child { border-bottom: none; }
+
+.fact-list .key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-top: 0.1rem;
+}
+
+.fact-list .val { color: var(--ink-2); line-height: 1.5; }
+.fact-list .val .est { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-muted); margin-left: 0.4rem; font-style: italic; }
+
+/* ============ Misc ============ */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+
+.divider.ornate {
+  text-align: center;
+  border: none;
+  font-family: 'Fraunces', serif;
+  color: var(--rust);
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  margin: 3rem 0;
+}
+.divider.ornate::before { content: '· · ·'; }
+
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+.bullet-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.bullet-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--rust);
+  font-family: 'Fraunces', serif;
+}
+
+footer {
+  background: var(--ink);
+  color: var(--ink-muted);
+  padding: 3rem 0 2.5rem;
+  margin-top: 4rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+footer .serif { color: #F2EDE1; font-size: 1.15rem; margin-bottom: 0.5rem; display: block; }
+
+.est-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: var(--amber);
+  background: rgba(198, 138, 44, 0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ============ Cost Buildup Table ============ */
+.cost-buildup {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+}
+
+.cost-buildup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.cost-buildup h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin: 0;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.cost-buildup .lane-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--rust);
+  text-transform: uppercase;
+}
+
+.cost-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 90px;
+  padding: 0.55rem 0;
+  border-bottom: 1px dotted var(--border-soft);
+  font-size: 0.92rem;
+  align-items: baseline;
+}
+
+.cost-row:last-of-type { border-bottom: none; }
+.cost-row .item { color: var(--ink-2); }
+.cost-row .item .sub { display: block; font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.15rem; }
+.cost-row .amount { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--ink); font-size: 0.85rem; }
+.cost-row .share { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--ink-3); font-size: 0.78rem; }
+
+.cost-row.total {
+  border-top: 2px solid var(--ink);
+  margin-top: 0.5rem;
+  padding-top: 0.85rem;
+  font-weight: 600;
+}
+.cost-row.total .item { color: var(--ink); font-weight: 600; }
+.cost-row.total .amount { color: var(--rust); font-weight: 600; font-size: 1rem; }
+
+.cost-row.savings {
+  background: rgba(92, 124, 95, 0.08);
+  padding: 0.85rem 0.6rem;
+  border-radius: 2px;
+  margin-top: 0.25rem;
+  border-bottom: none;
+}
+.cost-row.savings .item { color: var(--sage); font-weight: 600; }
+.cost-row.savings .amount { color: var(--sage); font-weight: 600; }
+
+/* ============ Contract Diagram ============ */
+.contract-diagram {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 2.5rem 2rem;
+  margin: 1.5rem 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .contract-diagram { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+}
+
+.diagram-node {
+  text-align: center;
+  padding: 1.25rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-warm);
+}
+
+.diagram-node.center { background: var(--ink); border-color: var(--ink); }
+.diagram-node.center .role { color: var(--rust-soft); }
+.diagram-node.center .name { color: #FAF6EE; }
+.diagram-node.center .detail { color: var(--ink-muted); }
+
+.diagram-node .role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.5rem;
+}
+
+.diagram-node .name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+.diagram-node .detail {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+.diagram-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.diagram-flow .arrow-line {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+}
+
+.diagram-flow .arrow-line::before,
+.diagram-flow .arrow-line::after {
+  content: '◄';
+  position: absolute;
+  top: -7px;
+  color: var(--rust);
+  font-size: 0.85rem;
+}
+.diagram-flow .arrow-line::before { left: 0; }
+.diagram-flow .arrow-line::after { right: 0; transform: rotate(180deg); }
+
+.diagram-flow span { background: var(--surface); padding: 0 0.6rem; }
+
+@media (max-width: 768px) {
+  .diagram-flow { flex-direction: row; }
+  .diagram-flow .arrow-line { width: 50px; }
+}
+
+/* ============ Combo Matrix ============ */
+.combo-matrix {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin: 1.5rem 0 2rem;
+  overflow-x: auto;
+}
+
+.combo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  min-width: 800px;
+}
+
+.combo-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.75rem 0.6rem;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface-warm);
+  vertical-align: bottom;
+}
+
+.combo-table td {
+  padding: 0.85rem 0.6rem;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+  color: var(--ink-2);
+}
+
+.combo-table tr.priority-1 td { background: rgba(185, 74, 14, 0.04); }
+
+.combo-table .lane-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  color: var(--ink);
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.combo-table .lane-name .sub {
+  display: block;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  font-weight: 400;
+  margin-top: 0.15rem;
+}
+
+.priority-pill {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.priority-pill.high { background: var(--rust); color: #fff; }
+.priority-pill.med { background: var(--amber); color: #fff; }
+.priority-pill.low { background: var(--ink-muted); color: #fff; }
+
+/* ============ TAM Waterfall ============ */
+.tam-waterfall {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+}
+
+.tam-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 130px;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  gap: 1rem;
+}
+
+.tam-row:last-child { border-bottom: none; }
+
+.tam-row .lane-label {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.tam-row .lane-label .sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  font-weight: 400;
+  margin-top: 0.15rem;
+}
+
+.tam-row .bar-wrap {
+  position: relative;
+  height: 28px;
+  background: var(--bg-alt);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tam-row .bar {
+  height: 100%;
+  background: linear-gradient(to right, var(--rust), var(--rust-soft));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.tam-row .bar.teal-bar { background: linear-gradient(to right, var(--teal), var(--tealSoft, #5994A6)); }
+.tam-row .bar.amber-bar { background: linear-gradient(to right, var(--amber), #E8B968); }
+
+.tam-row .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--ink);
+  text-align: right;
+  font-weight: 500;
+}
+
+.tam-row.total {
+  border-top: 2px solid var(--ink);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-bottom: none;
+}
+.tam-row.total .lane-label { color: var(--ink); font-weight: 600; font-size: 0.95rem; }
+.tam-row.total .value { color: var(--rust); font-weight: 600; font-size: 1rem; }
+
+@media (max-width: 720px) {
+  .tam-row { grid-template-columns: 1fr; gap: 0.4rem; }
+  .tam-row .bar-wrap { display: none; }
+}
+
+/* ============ Insight Cards ============ */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.insight-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+
+.insight-card .insight-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--rust);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  font-variation-settings: "opsz" 144;
+}
+
+.insight-card .insight-title {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card .insight-detail {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow">Trade Research · India / Solar Value Chain · May 2026</div>
+    <h1 class="title">India Solar Trade <em>—</em><br>Routes, Volumes & Carrier Contracts</h1>
+    <p class="lede">A complete picture of where solar components flow into and out of India, what's driving the volatility, and the five-to-seven shipping lanes worth locking in for the long haul.</p>
+
+    <div class="meta-row">
+      <div>Coverage Period<strong>FY24 → Q4 2025</strong></div>
+      <div>Products Analyzed<strong>13 categories</strong></div>
+      <div>Trade Lanes<strong>7 priority routes</strong></div>
+      <div>Business Case<strong>$105–155M TAM</strong></div>
+      <div>Confidence<strong>Mixed — see methodology</strong></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TAB NAV ============ -->
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" data-tab="overview"><span class="num">01</span>Overview</button>
+    <button class="tab-btn" data-tab="policy"><span class="num">02</span>Policy & Drivers</button>
+    <button class="tab-btn" data-tab="products"><span class="num">03</span>Products</button>
+    <button class="tab-btn" data-tab="routes"><span class="num">04</span>Trade Routes</button>
+    <button class="tab-btn" data-tab="economics"><span class="num">05</span>Container Economics</button>
+    <button class="tab-btn" data-tab="recommendations"><span class="num">06</span>Recommendations</button>
+    <button class="tab-btn" data-tab="costs"><span class="num">07</span>Cost & Contracts</button>
+    <button class="tab-btn" data-tab="all-play"><span class="num">08</span>ALL Business Case</button>
+    <button class="tab-btn" data-tab="sources"><span class="num">09</span>Methodology</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ TAB 1: OVERVIEW ============ -->
+<section class="tab-panel active" id="overview">
+  <div class="section-kicker">§ 01 / Overview</div>
+  <h2 class="section-title">The trade picture has <em>flipped</em> in 18 months.</h2>
+  <p class="section-intro">India's solar trade is the single fastest-growing containerised commodity flow in or out of the country. The composition is shifting rapidly — finished modules from China have given way to a multi-product upstream BoM trade plus a high-margin westbound module export to the US.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card accent">
+      <div class="stat-label">FY24 Solar Imports</div>
+      <div class="stat-value">$7.0<span class="unit">B</span></div>
+      <div class="stat-context">Total solar-sector imports; $3.89B from China alone</div>
+    </div>
+    <div class="stat-card teal">
+      <div class="stat-label">Q4 2025 Cell Share</div>
+      <div class="stat-value">79.2<span class="unit">%</span></div>
+      <div class="stat-context">Of total solar import shipments — modules just 20.8%</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">FY24 Module Exports</div>
+      <div class="stat-value">$1.97<span class="unit">B</span></div>
+      <div class="stat-context">~5.8 GW shipped; 97% to USA</div>
+    </div>
+    <div class="stat-card sage">
+      <div class="stat-label">India 2030 Target</div>
+      <div class="stat-value">500<span class="unit">GW</span></div>
+      <div class="stat-context">Non-fossil capacity; secures import demand for 5+ years</div>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">The Composition Flip</div>
+        <div class="chart-subtitle">Share of solar import shipments — FY24 vs Q4 2025</div>
+      </div>
+      <div class="chart-wrap"><canvas id="flipChart"></canvas></div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">Origin Concentration</div>
+        <div class="chart-subtitle">Q4 2025 import shares by country</div>
+      </div>
+      <div class="chart-wrap"><canvas id="originChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Quarterly Solar Imports — Cells vs Modules</div>
+      <div class="chart-subtitle">USD millions; Q1 2024 → Q4 2025. Note ALMM List-I reinstatement effect and the 2025 cell surge.</div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="quarterlyChart"></canvas></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>The five lanes worth a long-term contract</h3>
+  <p>Ranked by combination of annual value, TEU volume, forward visibility, and buyer concentration. Detailed in Tab 04.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Top 7 Trade Routes — Annual Value Range</div>
+      <div class="chart-subtitle">Estimated USD value of each lane <span class="est-badge">EST</span></div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="routesChart"></canvas></div>
+  </div>
+
+  <p class="pull-quote">"India's solar trade has gone from 'mostly Chinese modules into JNPT' to a multi-product, multi-port, multi-origin trade — the highest-value flow is now upstream cells and wafers into Mundra, and the highest-margin flow is finished modules westbound to USA."</p>
+</section>
+
+<!-- ============ TAB 2: POLICY ============ -->
+<section class="tab-panel" id="policy">
+  <div class="section-kicker">§ 02 / Policy & Drivers</div>
+  <h2 class="section-title">Every duty change moves <em>billions</em> of dollars of cargo.</h2>
+  <p class="section-intro">Three policy levers — ALMM, BCD, and Anti-Dumping — explain almost every quarter-to-quarter movement in volumes and origin shares. Understanding the policy stack is non-negotiable for contracting capacity.</p>
+
+  <div class="chart-grid-2">
+    <div>
+      <h3>The ALMM Ladder</h3>
+      <p>The Approved List of Models & Manufacturers progressively walks tariff protection upstream every 18–24 months. Each new list pulls a wave of front-loaded imports just before the deadline, then dampens that line permanently.</p>
+
+      <div class="timeline">
+        <div class="timeline-item muted">
+          <div class="timeline-date">Mar 2023</div>
+          <div class="timeline-title">ALMM I paused</div>
+          <div class="timeline-desc">Suspended for FY24 to ease module supply crunch — triggered the FY24 import surge.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Apr 2024</div>
+          <div class="timeline-title">ALMM List-I reinstated</div>
+          <div class="timeline-desc">Mandates domestic modules for govt-tied projects. Module imports fell from $4.35B (FY24) → $2.15B (FY25).</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Aug 2025</div>
+          <div class="timeline-title">ALMM List-II issued</div>
+          <div class="timeline-desc">Domestic-cell list released. Triggered Q3-Q4 2025 cell pre-buying rush from China.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Jun 2026</div>
+          <div class="timeline-title">List-II mandatory</div>
+          <div class="timeline-desc">All govt-tied projects must source cells from listed Indian makers only.</div>
+        </div>
+        <div class="timeline-item muted">
+          <div class="timeline-date">Late 2026</div>
+          <div class="timeline-title">List-III (wafers) draft</div>
+          <div class="timeline-desc">Will mandate domestic wafers post-2028. Currently in draft.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Tariff Stack (post-Budget 2025)</h3>
+      <p>BCD plus cesses — the layered duty structure that determines landed cost.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Product</th><th>BCD</th><th>Add'l Cess</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Solar modules</td><td class="numeric">20%</td><td class="numeric">20% AIDC + 4% SWS</td></tr>
+          <tr><td>Solar cells</td><td class="numeric">20%</td><td class="numeric">7.5% AIDC + 2.5% SWS</td></tr>
+          <tr><td>Solar glass</td><td class="numeric">10%</td><td class="numeric">— + ADD</td></tr>
+          <tr><td>Tin/copper interconnect</td><td class="numeric">5%</td><td class="numeric">—</td></tr>
+          <tr><td>EVA raw material</td><td class="numeric">0%</td><td class="numeric">Exempt to Mar 2026</td></tr>
+          <tr><td>GST (solar equipment)</td><td class="numeric">5%</td><td class="numeric">Cut from 12% in Sep 2025</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Anti-Dumping Active</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Product</th><th>Origin</th><th>Rate</th><th>Effect From</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Solar glass</td><td>China</td><td class="numeric">$673–677/MT</td><td>Dec 2024 (5yr)</td></tr>
+          <tr><td>Solar glass</td><td>Vietnam</td><td class="numeric">$565/MT</td><td>Dec 2024 (5yr)</td></tr>
+          <tr><td>Aluminium frames</td><td>China</td><td class="numeric">$403–577/MT</td><td>Sep 2024 (5yr)</td></tr>
+          <tr><td>Solar cells</td><td>China</td><td class="numeric">Up to 30%</td><td>FY26 (proposed)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Capacity vs Demand Gap</div>
+      <div class="chart-subtitle">India's installed capacity by stage (Dec 2025) — the gap that keeps imports flowing</div>
+    </div>
+    <div class="chart-wrap"><canvas id="capacityChart"></canvas></div>
+  </div>
+
+  <div class="callout warning">
+    <strong>WTO escalation (Dec 2025):</strong> China filed a formal consultation request at the WTO challenging India's ALMM-tied procurement and solar subsidies. Tit-for-tat is escalating, not subsiding — expect more trade defence measures from both sides through FY26-FY27.
+  </div>
+</section>
+
+<!-- ============ TAB 3: PRODUCTS ============ -->
+<section class="tab-panel" id="products">
+  <div class="section-kicker">§ 03 / Products</div>
+  <h2 class="section-title">Thirteen product flows, <em>one</em> value chain.</h2>
+  <p class="section-intro">Each card below opens to reveal HS code, recent values, origin shares, port destinations, container math and a forward outlook. Tagged values are direct from official Indian customs data; estimated values are calculated from value × industry-standard loading factors.</p>
+
+  <div class="product-accordion">
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Solar PV Modules</div>
+          <div class="product-hs">HS 8541 4300</div>
+        </div>
+        <div class="product-value">$2.15B FY25</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">FY24 imports</span><span class="val">$4,353.51 M (~20 GW)</span></li>
+              <li><span class="key">FY25 imports</span><span class="val">$2,151 M (sharp post-ALMM-I drop)</span></li>
+              <li><span class="key">Q4 2025</span><span class="val">$216.25 M (~1 GW)</span></li>
+              <li><span class="key">Top origins Q4 25</span><span class="val">Vietnam 33%, China 32%, Malaysia 31%</span></li>
+              <li><span class="key">Top origins FY24</span><span class="val">China 66%, Vietnam 21%, Malaysia 5%</span></li>
+              <li><span class="key">Top dest. port</span><span class="val">Nhava Sheva > Mundra > Chennai<span class="est">est</span></span></li>
+              <li><span class="key">Container math</span><span class="val">0.4–0.5 MW per 40HC; $50K–$80K/FEU<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Shanghai–Mundra: 15–24 days</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>Volumes structurally declined ~50% FY24 → FY25 as ALMM-I bit. Non-DCR/C&I/open-access projects still import substantial volumes — Chinese non-DCR TopCon at ~$0.088/W FOB remains competitive against ~$0.15/W Indian non-DCR pricing even with 20% BCD.</p>
+            <p><strong>Forward view:</strong> Module imports settle at ~$1.5-2B range, dominated by Vietnam/Malaysia/Thailand for the non-DCR segment.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Solar Cells</div>
+          <div class="product-hs">HS 8541 4200</div>
+        </div>
+        <div class="product-value">$892M Q4 25</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">FY24 imports</span><span class="val">$1,853 M</span></li>
+              <li><span class="key">Q4 2025</span><span class="val">$892.15 M (China 67%)</span></li>
+              <li><span class="key">9M 2025 YoY</span><span class="val">Cells +75% / Modules -74%</span></li>
+              <li><span class="key">Top dest. port</span><span class="val">Mundra, JNPT, Chennai<span class="est">est</span></span></li>
+              <li><span class="key">Container math</span><span class="val">2–3 MW per 40HC; $200K–$400K/FEU<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Shanghai–Mundra: 15–24d; Penang–Chennai: 7–9d</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p><strong>The hottest lane right now.</strong> Developers front-loaded cell purchases ahead of the June 2026 ALMM List-II mandate. Chinese cells at $0.042/W remain ~30% cheaper than domestic ($0.077/W) even after 20% BCD + 7.5% AIDC.</p>
+            <p>After June 2026, govt-tied projects must use domestic cells, but open-access/behind-the-meter/merchant projects can still import. Expect ~40-50% step down in FY27, stabilising at ~10-15 GW/yr.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Silicon Wafers & Ingots</div>
+          <div class="product-hs">HS 3818 0010</div>
+        </div>
+        <div class="product-value">Fastest growth</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Origin</span><span class="val">China 95% of global wafer exports</span></li>
+              <li><span class="key">India rank</span><span class="val">#1 global solar wafer importer</span></li>
+              <li><span class="key">Recent growth</span><span class="val">+176% YoY (Feb 2024)</span></li>
+              <li><span class="key">Top dest. port</span><span class="val">Mundra, Krishnapatnam/Chennai<span class="est">est</span></span></li>
+              <li><span class="key">Container math</span><span class="val">$150K–$300K per 20ft<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Shanghai–Mundra: 18–24 days</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>Highest-growth lane in solar. India's 40 GW wafer-capacity roadmap (by 2027) and upcoming ALMM List-III mean wafer imports could 3-5x by 2028 <span class="est-badge">EST</span>.</p>
+            <p>Reliance, Adani, Premier Energies–SAS JV, Waaree all building wafer lines, but China dominance persists 5+ years. Wafers are fragile and need vibration-controlled handling — premium freight rate, lower volume, fastest growth.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Polysilicon</div>
+          <div class="product-hs">HS 2804 6100</div>
+        </div>
+        <div class="product-value">Emerging</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Origin concentration</span><span class="val">China 93% of global capacity</span></li>
+              <li><span class="key">Current price</span><span class="val">~$4.50/kg (down from $39 in 2022)</span></li>
+              <li><span class="key">India production</span><span class="val">0 commercial (Adani Mundra 30K MTPA building)</span></li>
+              <li><span class="key">Top dest. port</span><span class="val">Mundra (adjacent to Adani Solar Technopark)</span></li>
+              <li><span class="key">Container math</span><span class="val">~20 t per 20ft drums; $80–90K/TEU<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Inland China → Shanghai → Mundra: 20–25d</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>China's 2024 polysilicon exports surpassed imports for the first time in history. India will remain a major importer 3-5 years until Adani Mundra and Reliance Jamnagar ramp.</p>
+            <p>Carrier opportunity: large bulk-in-container chemical shipments from a small number of corporate customers (Adani, Reliance) — easier to contract.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Solar Glass (textured tempered)</div>
+          <div class="product-hs">HS 7007 1900 / 7007 2900</div>
+        </div>
+        <div class="product-value">Highest tonnage</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">ADD invest. period</span><span class="val">779,017 MT (China+Vietnam 98%)</span></li>
+              <li><span class="key">China pre-ADD growth</span><span class="val">29K MT (FY21) → 659K MT (IP)</span></li>
+              <li><span class="key">Post-ADD origins</span><span class="val">Malaysia (no ADD), Indonesia, domestic</span></li>
+              <li><span class="key">Top dest. ports</span><span class="val">Nhava Sheva, Mundra, Pipavav</span></li>
+              <li><span class="key">Container math</span><span class="val">25–27 MT per 20ft; $8K–$25K/TEU<span class="est">est</span></span></li>
+              <li><span class="key">Annual TEU</span><span class="val">~56K–64K TEU at peak<span class="est">est</span></span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>The Dec 2024 ADD on China+Vietnam tripled effective landed price. Imports re-routing through Malaysia and Indonesia; Borosil group is grabbing domestic share aggressively.</p>
+            <p>Highest-tonnage solar trade flow; modest value per TEU. Volatile due to ADD enforcement. Good for cubic-meter rate contracts rather than slot guarantees.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">EVA / POE / EPE Encapsulants</div>
+          <div class="product-hs">HS 3920 1019 / 3905 9990</div>
+        </div>
+        <div class="product-value">Localising</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Global leader</span><span class="val">Hangzhou First ~50% share</span></li>
+              <li><span class="key">India domestic</span><span class="val">RenewSys, Vishakha, Navitas, Alishan — ~10-12 GW</span></li>
+              <li><span class="key">100 GW demand</span><span class="val">~200,000 MT/yr film<span class="est">est</span></span></li>
+              <li><span class="key">Top dest. ports</span><span class="val">Mundra, JNPT, Chennai, Krishnapatnam<span class="est">est</span></span></li>
+              <li><span class="key">Container math</span><span class="val">18–22 MT per 20ft rolls; $30–50K/TEU<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Shanghai–Mundra: 18–22 days</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>Finished film imports may flatten as Indian capacity (RenewSys, Alishan) scales. But imports of raw resin (EVA/POE polymer pellets under HS 3905) will scale up proportionally — net polymer import volume probably grows 50-100% by 2028 <span class="est-badge">EST</span>.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Aluminium Frames</div>
+          <div class="product-hs">HS 7604 2990 / 7610 1000</div>
+        </div>
+        <div class="product-value">ADD-disrupted</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Import dependence</span><span class="val">~95% from China pre-ADD</span></li>
+              <li><span class="key">ADD (Sep 2024)</span><span class="val">$403–577/MT on China, 5-year</span></li>
+              <li><span class="key">Domestic build-out</span><span class="val">H&H 24K MTPA, GenX 18K MTPA, Insolation 24K</span></li>
+              <li><span class="key">50 GW Indian demand</span><span class="val">~275,000 MT/yr<span class="est">est</span></span></li>
+              <li><span class="key">Container math</span><span class="val">15–20 MT per 20ft; $25–40K/TEU<span class="est">est</span></span></li>
+              <li><span class="key">Top dest. port</span><span class="val">Mundra, JNPT, Chennai<span class="est">est</span></span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>ADD forcing structural shift to domestic, but domestic capacity (~70K MTPA) is far below demand (~250K+ MTPA). 2025-27 transitional period of imports from non-China origins (Vietnam, Malaysia, Korea, Middle East).</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Solar Inverters</div>
+          <div class="product-hs">HS 8504 4040</div>
+        </div>
+        <div class="product-value">Project cargo</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Global market 2024</span><span class="val">589 GW shipped (+10% YoY)</span></li>
+              <li><span class="key">APAC share</span><span class="val">69% of global shipments</span></li>
+              <li><span class="key">India leaders</span><span class="val">Sungrow #1, Huawei, TBEA, TMEIC, Fimer</span></li>
+              <li><span class="key">Container math</span><span class="val">Central 3–5 MT each; breakbulk/flat-rack<span class="est">est</span></span></li>
+              <li><span class="key">Top dest. ports</span><span class="val">Mundra, JNPT, Chennai (project-specific)<span class="est">est</span></span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>Indianising rapidly via local assembly. Central inverters (utility scale) more likely to remain imported as project cargo; string inverters increasingly assembled in India. Small but high-value lane — better for project-cargo contracts than container slot agreements.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">BESS & Lithium-ion Cells</div>
+          <div class="product-hs">HS 8507 6000 · Class 9</div>
+        </div>
+        <div class="product-value">Fastest-growing</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">Import dependence</span><span class="val">>90% lithium, ~55% of BESS system cost</span></li>
+              <li><span class="key">Recent deals</span><span class="val">ACME 5+ GWh from Lishen (China)</span></li>
+              <li><span class="key">2031-32 need</span><span class="val">236 GWh BESS (CEA estimate)</span></li>
+              <li><span class="key">Container math</span><span class="val">3–5 MWh per 20ft BESS; $300K–$600K<span class="est">est</span></span></li>
+              <li><span class="key">Hazmat</span><span class="val">UN3480 IMDG Class 9 — restricted carriers</span></li>
+              <li><span class="key">Top dest. ports</span><span class="val">Mundra, JNPT, Krishnapatnam, Ennore<span class="est">est</span></span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p><strong>Single best emerging long-term lane.</strong> India pipeline already exceeds 100 GWh tendering by early 2026. BESS imports could reach 20-30 GWh/yr by 2027 <span class="est-badge">EST</span> — all Class 9 hazmat. Class 9-capable carriers (Maersk, MSC, CMA CGM, ONE) have strong positioning here.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="product-item" onclick="toggleProduct(this)">
+      <div class="product-header">
+        <div class="product-title-row">
+          <div class="product-title">Module Exports → USA</div>
+          <div class="product-hs">HS 8541 4300 (EXPORT)</div>
+        </div>
+        <div class="product-value">Top earner</div>
+        <div class="product-toggle">+</div>
+      </div>
+      <div class="product-body"><div class="product-body-inner">
+        <div class="product-cols">
+          <div>
+            <h4>Key Facts</h4>
+            <ul class="fact-list">
+              <li><span class="key">FY24 exports</span><span class="val">$1,969 M (~5.8 GW)</span></li>
+              <li><span class="key">FY25 Apr-Nov</span><span class="val">$782 M ($756M to USA)</span></li>
+              <li><span class="key">USA share</span><span class="val">97-99% of total</span></li>
+              <li><span class="key">Top origin ports</span><span class="val">Mundra, JNPT, Hazira, Chennai<span class="est">est</span></span></li>
+              <li><span class="key">Top US ports</span><span class="val">Houston, Port Everglades, Newark, Savannah</span></li>
+              <li><span class="key">Container math</span><span class="val">0.4-0.5 MW per 40HC; $120–180K/FEU<span class="est">est</span></span></li>
+              <li><span class="key">Transit</span><span class="val">Mundra-Houston: 31-50 days (Suez/Cape)</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outlook</h4>
+            <p>Q4 2025 saw 70% QoQ collapse from US tariff escalation, but installed demand remains. Adani's two Mundra entities (Mundra Solar PV + Mundra Solar Energy) are India's dominant module exporters to USA — with multi-thousand cumulative shipments per shipment-tracking databases. Indian exporters' US-bound volume averages 3-7 GW/yr through 2028 <span class="est-badge">EST</span> with significant policy-driven lumpiness.</p>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ TAB 4: TRADE ROUTES ============ -->
+<section class="tab-panel" id="routes">
+  <div class="section-kicker">§ 04 / Trade Routes</div>
+  <h2 class="section-title">Seven lanes worth a <em>long-term</em> contract.</h2>
+  <p class="section-intro">Ranked by a combination of annual value, TEU volume, forward visibility, and buyer concentration. The first two are the strategic core; the rest support different segments of the trade.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Annual TEU Volume by Lane</div>
+      <div class="chart-subtitle">Estimated annual TEU-equivalent volume (high end of range) <span class="est-badge">EST</span></div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="teuChart"></canvas></div>
+  </div>
+
+  <div class="route-cards">
+
+    <div class="route-card">
+      <div class="route-num">01</div>
+      <div>
+        <div class="route-tag">Top Priority · Eastbound</div>
+        <div class="route-path">Shanghai / Ningbo <span class="arrow">→</span> Mundra</div>
+        <p class="route-detail">Solar cells, wafers, polysilicon and high-value BoM. The single most strategic westbound solar lane. Even after ALMM-II (June 2026), open-access/C&I projects + Indian cell makers needing wafers keep the volume.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$1.0–1.5B<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">8–15K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">15–24 days</div></div>
+          <div class="route-metric"><div class="label">Buyers</div><div class="value">Adani, Waaree, Premier, Reliance, Tata, ReNew</div></div>
+        </div>
+        <p class="route-risk">Risk: PLI-driven cell ramp; potential 30% ADD on Chinese cells could compress volume 30-50%.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">02</div>
+      <div>
+        <div class="route-tag">Top Priority · Westbound</div>
+        <div class="route-path">Mundra <span class="arrow">→</span> Houston / Pt Everglades / Savannah / Newark</div>
+        <p class="route-detail">Indian module exports to USA. Highest-margin lane — Indian shippers earn 40-60% higher margins on US sales than domestic. Adani's two Mundra entities dominate the lane, with multi-thousand cumulative shipments per tracking databases.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$0.8–1.5B<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">8–14K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">31–50 days</div></div>
+          <div class="route-metric"><div class="label">Shippers</div><div class="value">Adani, Waaree, Vikram, ReNew, Tata, Goldi</div></div>
+        </div>
+        <p class="route-risk">Risk: US tariff escalation caused 50-70% QoQ collapses in 2025; Red Sea diversions add 7-12 days via Cape.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">03</div>
+      <div>
+        <div class="route-tag">High Priority · Eastbound</div>
+        <div class="route-path">Shanghai / Ningbo <span class="arrow">→</span> Nhava Sheva (JNPT)</div>
+        <p class="route-detail">Modules and BoM for Maharashtra, Karnataka and Tamil Nadu manufacturing clusters. JNPT has highest container productivity and best ICD network into the south & central hinterland.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$400M–$700M<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">8–15K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">14–18 days</div></div>
+          <div class="route-metric"><div class="label">Buyers</div><div class="value">Vikram Solar, Mahindra Susten, Premier, Tata</div></div>
+        </div>
+        <p class="route-risk">Risk: Greenfield Vadhvan port (Maharashtra) may divert volume in 5-8 years.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">04</div>
+      <div>
+        <div class="route-tag">High Priority · Eastbound</div>
+        <div class="route-path">Hai Phong / Ho Chi Minh <span class="arrow">→</span> Mundra & JNPT</div>
+        <p class="route-detail">Vietnam-origin modules and cells. India-ASEAN FTA gives tariff-free entry for qualifying Vietnamese modules — that's why Chinese manufacturers route through Vietnam. Vietnam was 33% of module imports in Q4 2025.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$300M–$600M<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">6–12K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">8–18 days</div></div>
+          <div class="route-metric"><div class="label">Why</div><div class="value">FTA arbitrage; China route-around</div></div>
+        </div>
+        <p class="route-risk">Risk: India may impose stricter rules-of-origin enforcement; volatile origin.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">05</div>
+      <div>
+        <div class="route-tag">High Volume · Eastbound</div>
+        <div class="route-path">Shanghai / Tianjin / Pasir Gudang <span class="arrow">→</span> Mundra / Pipavav / Hazira</div>
+        <p class="route-detail">Heavy BoM — solar glass, aluminium frames, bulky polymer/film. Highest-tonnage solar lane (20-35K TEU/yr). Lower value per TEU, but ideal for guaranteed slot agreements and cubic-meter rate contracts.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$300–500M<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">20–35K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">18–24 days</div></div>
+          <div class="route-metric"><div class="label">Volume</div><div class="value">Highest tonnage lane</div></div>
+        </div>
+        <p class="route-risk">Glass ADD has redirected China/Vietnam flow to Malaysia (Pasir Gudang); could become dedicated lane.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">06</div>
+      <div>
+        <div class="route-tag">Emerging · Class 9 Hazmat</div>
+        <div class="route-path">Shanghai / Ningbo / Xiamen <span class="arrow">→</span> Mundra / Krishnapatnam</div>
+        <p class="route-detail">BESS containers and lithium-ion cells for India's 411 GWh storage build-out. The fastest-growing solar-adjacent lane — projected to reach $2-4B annual value by 2027.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$150–400M today<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">1–3K → 5–10K by 2027<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">18–24 days</div></div>
+          <div class="route-metric"><div class="label">Special</div><div class="value">UN3480 IMDG Class 9</div></div>
+        </div>
+        <p class="route-risk">Carriers with Class 9 capability hold negotiating leverage; lock in capacity before it tightens by 2027.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">07</div>
+      <div>
+        <div class="route-tag">Specialty · Eastbound</div>
+        <div class="route-path">Port Klang / Penang <span class="arrow">→</span> Chennai / Ennore</div>
+        <p class="route-detail">Malaysian-origin cells and solar glass. Shortest transit of any India-Asia solar lane. Malaysia became the no-ADD origin for solar glass post-Dec 2024 — Malaysian glass exports to India set to surge.</p>
+        <div class="route-metrics">
+          <div class="route-metric"><div class="label">Annual Value</div><div class="value">$300–500M<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Annual TEU</div><div class="value">3–5K<span class="est-badge">EST</span></div></div>
+          <div class="route-metric"><div class="label">Transit</div><div class="value">7–10 days</div></div>
+          <div class="route-metric"><div class="label">Why</div><div class="value">Shortest Asia–India lane</div></div>
+        </div>
+        <p class="route-risk">Best for South Indian buyers (TN, Karnataka, AP); not a major lane but reliable and fast.</p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ============ TAB 5: CONTAINER ECONOMICS ============ -->
+<section class="tab-panel" id="economics">
+  <div class="section-kicker">§ 05 / Container Economics</div>
+  <h2 class="section-title">How to price <em>capacity</em>.</h2>
+  <p class="section-intro">Quick-reference math for converting product flows into TEU/FEU contracts. All figures are industry-standard estimates — real-world packing varies ±15-20%.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Value Density by Product</div>
+      <div class="chart-subtitle">Approximate USD value per 40HC container, high end of range <span class="est-badge">EST</span></div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="densityChart"></canvas></div>
+  </div>
+
+  <h3>Container Math Reference Table</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Product</th><th>Container Type</th><th>Loading</th><th>Value per FEU</th><th>Hazmat</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Solar modules (540-580W)</td><td>40HC</td><td>720-840 modules · 0.4-0.5 MW</td><td class="numeric">$50K–$180K</td><td>—</td></tr>
+      <tr><td>Solar cells (M10/M12)</td><td>40HC</td><td>2-3 MW</td><td class="numeric">$200K–$400K</td><td>—</td></tr>
+      <tr><td>Silicon wafers</td><td>20ft cushioned</td><td>0.5-1 GW worth</td><td class="numeric">$150K–$300K</td><td>—</td></tr>
+      <tr><td>Polysilicon (drums)</td><td>20ft</td><td>~20 MT</td><td class="numeric">$80K–$90K</td><td>—</td></tr>
+      <tr><td>Solar glass</td><td>20ft (heavy)</td><td>25-27 MT</td><td class="numeric">$8K–$25K</td><td>—</td></tr>
+      <tr><td>EVA / POE film</td><td>40HC</td><td>18-22 MT rolls</td><td class="numeric">$30K–$50K</td><td>—</td></tr>
+      <tr><td>Aluminium frames</td><td>40ft flat-rack</td><td>15-20 MT</td><td class="numeric">$25K–$40K</td><td>—</td></tr>
+      <tr><td>Central inverter</td><td>40HC / breakbulk</td><td>1-2 units (3-5 MT each)</td><td class="numeric">$200K–$500K</td><td>—</td></tr>
+      <tr><td><strong>Containerised BESS</strong></td><td>20ft purpose-built</td><td>3-5 MWh LFP</td><td class="numeric">$300K–$600K</td><td><strong>Class 9</strong></td></tr>
+      <tr><td><strong>Li-ion cells (loose)</strong></td><td>40HC</td><td>10-15 MWh</td><td class="numeric">$1.5M–$3M</td><td><strong>Class 9</strong></td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <div class="chart-grid-2">
+    <div>
+      <h3>Seasonality — Slot Planning</h3>
+      <ul class="bullet-list">
+        <li><strong>Pre-Diwali (Aug-Oct):</strong> India port congestion; +5-10 days transit. Solar competes with consumer electronics, garments.</li>
+        <li><strong>Chinese New Year (Jan-Feb):</strong> Pre-CNY rush of Chinese-origin; carriers add blank sailings; +7-14 days.</li>
+        <li><strong>Monsoon (Jun-Sep):</strong> East-coast Indian ports more affected than West coast.</li>
+        <li><strong>Pre-ALMM deadlines:</strong> Q3-Q4 2025 saw cell-import surge ahead of June 2026 deadline. Similar effect ahead of June 2028 ALMM-III deadline.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Key Indian Ports</h3>
+      <table class="data-table">
+        <thead><tr><th>Port</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mundra</strong></td><td>FY25 200+ MMT, deepest draft; solar manufacturing hub</td></tr>
+          <tr><td><strong>JNPT</strong></td><td>7.05M TEU 2024; best ICD network</td></tr>
+          <tr><td><strong>Pipavav</strong></td><td>APMT-controlled; lighter congestion; breakbulk</td></tr>
+          <tr><td><strong>Hazira</strong></td><td>Adani; close to Reliance Jamnagar</td></tr>
+          <tr><td><strong>Chennai/Ennore</strong></td><td>Tamil Nadu / AP / Telangana clusters</td></tr>
+          <tr><td><strong>Krishnapatnam</strong></td><td>Emerging BESS & southern projects</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Risk Register</h3>
+  <table class="data-table">
+    <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th></tr></thead>
+    <tbody>
+      <tr><td>30% ADD on Chinese solar cells</td><td>High (FY26)</td><td>-20% to -40% on China-Mundra cell lane</td></tr>
+      <tr><td>US tariff increase on Indian modules</td><td>Medium-High</td><td>Mundra-USA lane volatility</td></tr>
+      <tr><td>China VAT rebate withdrawal</td><td>Confirmed late 2025</td><td>One-time pull-forward of cell/module imports</td></tr>
+      <tr><td>ALMM List-III (wafers)</td><td>High by 2028</td><td>Wafer imports -30-50% post-2028</td></tr>
+      <tr><td>Vadhvan port commissioning</td><td>Medium (5-7yr)</td><td>JNPT diversion</td></tr>
+      <tr><td>Red Sea / Suez disruption</td><td>Ongoing</td><td>Mundra-USA / Mundra-EU +7-12 days</td></tr>
+      <tr><td>Chinese export controls on solar tech</td><td>Low-Medium</td><td>Polysilicon/wafer price spikes</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ TAB 6: RECOMMENDATIONS ============ -->
+<section class="tab-panel" id="recommendations">
+  <div class="section-kicker">§ 06 / Recommendations</div>
+  <h2 class="section-title">A <em>portfolio</em> approach to lane contracting.</h2>
+  <p class="section-intro">For a logistics company seeking 3-5 year carrier commitments, the strategically defensible plays. Don't contract a single-product, single-lane deal — secure capacity across at least 5 of the 7 priority lanes to absorb policy-driven volatility instead of being broken by it.</p>
+
+  <div class="route-cards">
+
+    <div class="route-card">
+      <div class="route-num">①</div>
+      <div>
+        <div class="route-tag">Anchor Position</div>
+        <div class="route-path">Lock multi-year capacity on Shanghai/Ningbo → Mundra</div>
+        <p class="route-detail">10-15K TEU/yr on cells + wafers + BoM. The single highest-value lane. Buyer concentration (Adani, Waaree, Premier, Reliance) is favourable for back-to-back contracts.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">②</div>
+      <div>
+        <div class="route-tag">Strategic Bet</div>
+        <div class="route-path">Secure dedicated Class 9 hazmat capacity for BESS</div>
+        <p class="route-detail">Negotiate now with 1-2 carriers (Maersk, MSC are most likely) before that capacity tightens by 2027. Pipeline already exceeds 100 GWh — and only Class 9-capable vessels can move it.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">③</div>
+      <div>
+        <div class="route-tag">High-Margin Export</div>
+        <div class="route-path">Build a Mundra → Houston / Florida string for module exports</div>
+        <p class="route-detail">One major carrier partnership. Adani, Waaree and 4-5 other shippers feed it consistently. 40-50 day transit makes long-term capacity essential to avoid spot exposure.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">④</div>
+      <div>
+        <div class="route-tag">Policy Hedge</div>
+        <div class="route-path">Hedge against ADD volatility with ASEAN lanes</div>
+        <p class="route-detail">Don't put all capacity on China-origin contracts; secure ~25-30% on Vietnam, Malaysia, Thailand-origin lanes to absorb policy-driven re-routing.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">⑤</div>
+      <div>
+        <div class="route-tag">Capacity Hedge</div>
+        <div class="route-path">Add a Pipavav or Hazira string as Mundra-overflow</div>
+        <p class="route-detail">Mundra congestion is a real risk — backup-port capacity carries a premium worth paying, especially during Diwali and pre-ALMM-deadline surges.</p>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-num">⑥</div>
+      <div>
+        <div class="route-tag">Rate Discipline</div>
+        <div class="route-path">For highest-tonnage flows, bid cubic-meter rate contracts</div>
+        <p class="route-detail">Solar glass, frames, low-value bulky BoM — this is high-volume, low-margin. Rate discipline matters more than slot guarantees.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p class="pull-quote">"India's solar trade has flipped from one-product, one-lane to a multi-product, multi-origin, multi-port flow. A single-product carrier deal is the wrong instrument — a portfolio of 5-7 lane positions is what rides the volatility instead of being broken by it."</p>
+</section>
+
+<!-- ============ TAB 7: COST & CONTRACTS ============ -->
+<section class="tab-panel" id="costs">
+  <div class="section-kicker">§ 07 / Cost & Contract Economics</div>
+  <h2 class="section-title">What shippers pay <em>today</em> — and what they're leaving on the table.</h2>
+  <p class="section-intro">Solar shippers operate in one of the most volatile ocean freight markets on Earth. Spot rates on these lanes swung 25-70% within months in 2024-2025. Long-term contracts plus carrier back-to-backs can compress this volatility into a predictable margin band — for both shippers and the intermediating logistics provider.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card accent">
+      <div class="stat-label">Spot Premium During Disruption</div>
+      <div class="stat-value">25–70<span class="unit">%</span></div>
+      <div class="stat-context">FY 2024-25 spot rate swings on India-US & China-India lanes</div>
+    </div>
+    <div class="stat-card teal">
+      <div class="stat-label">Contract Rate Savings</div>
+      <div class="stat-value">15–20<span class="unit">%</span></div>
+      <div class="stat-context">Documented procurement savings via long-term contracts <span class="est-badge">EST</span></div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">Contract Volume Threshold</div>
+      <div class="stat-value">1.0–1.5<span class="unit">K TEU</span></div>
+      <div class="stat-context">Minimum annual volume per lane to make a contract economically viable</div>
+    </div>
+    <div class="stat-card sage">
+      <div class="stat-label">Modern Mix Ratio</div>
+      <div class="stat-value">80<span class="unit">/20</span></div>
+      <div class="stat-context">Contract-to-spot ratio replacing old 90/10 — keeps flexibility</div>
+    </div>
+  </div>
+
+  <h3>What freight rates actually look like — recent benchmarks</h3>
+  <p>Most rate volatility doesn't show in averages. These are the recorded spot rate moves on India's solar trade lanes in 2024-2025. Each peak-to-trough move represents a multi-million-dollar swing in landed cost for a mid-sized importer.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Spot Freight Rate Volatility — Key Solar Lanes</div>
+      <div class="chart-subtitle">Recorded spot rates per 40HQ container, late 2024 to mid 2025</div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="volatilityChart"></canvas></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Anatomy of a single shipment — where every dollar goes</h3>
+  <p>Two worked examples below: a typical solar cell import on the Shanghai-Mundra eastbound lane, and a typical module export on the Mundra-Houston westbound lane. Both at mid-2025 spot rates. Both before duties (which add separately — 20% BCD + 7.5% AIDC on declared invoice value for cells).</p>
+
+  <div class="chart-grid-2">
+    <div class="cost-buildup">
+      <div class="cost-buildup-header">
+        <div>
+          <h4>Solar Cells · 40HQ</h4>
+          <div class="lane-tag" style="margin-top: 0.25rem;">Shanghai → Mundra · Spot Mode</div>
+        </div>
+      </div>
+      <div class="cost-row"><div class="item">Ocean freight (FOB Shanghai)<span class="sub">Base + BAF, mid-2025 spot</span></div><div class="amount">$1,900</div><div class="share">66%</div></div>
+      <div class="cost-row"><div class="item">Origin THC (Shanghai)<span class="sub">Terminal handling at port</span></div><div class="amount">$200</div><div class="share">7%</div></div>
+      <div class="cost-row"><div class="item">Origin documentation & ENS<span class="sub">Bill of Lading, advance manifest</span></div><div class="amount">$80</div><div class="share">3%</div></div>
+      <div class="cost-row"><div class="item">Destination THC (Mundra)<span class="sub">Indian port handling</span></div><div class="amount">$300</div><div class="share">10%</div></div>
+      <div class="cost-row"><div class="item">CFS & customs broker<span class="sub">Container freight station + clearance</span></div><div class="amount">$450</div><div class="share">15%</div></div>
+      <div class="cost-row"><div class="item">Last-mile to factory (Mundra cluster)<span class="sub">Truck within 50 km radius</span></div><div class="amount">$200</div><div class="share">7%</div></div>
+      <div class="cost-row total"><div class="item">Total landed (in-bond)<span class="sub">Excl. BCD, AIDC, SWS, GST</span></div><div class="amount">$3,130</div><div class="share">100%</div></div>
+      <div class="cost-row" style="margin-top: 0.5rem;"><div class="item" style="font-size: 0.78rem; color: var(--ink-muted);">Cargo value (typical 40HQ)</div><div class="amount" style="color: var(--ink-3);">~$300K</div><div class="share">—</div></div>
+      <div class="cost-row" style="border-top: 1px dotted var(--border);"><div class="item" style="font-size: 0.78rem; color: var(--ink-muted);">Freight as % of cargo value</div><div class="amount" style="color: var(--ink-3);">~1.0%</div><div class="share">—</div></div>
+    </div>
+
+    <div class="cost-buildup">
+      <div class="cost-buildup-header">
+        <div>
+          <h4>Solar Modules · 40HQ</h4>
+          <div class="lane-tag" style="margin-top: 0.25rem;">Mundra → Houston · Spot Mode</div>
+        </div>
+      </div>
+      <div class="cost-row"><div class="item">Ocean freight (FOB Mundra)<span class="sub">Base + BAF, late 2024 spot via Suez/Cape</span></div><div class="amount">$2,900</div><div class="share">61%</div></div>
+      <div class="cost-row"><div class="item">Origin THC (Mundra)<span class="sub">India port handling</span></div><div class="amount">$300</div><div class="share">6%</div></div>
+      <div class="cost-row"><div class="item">Export documentation & SB<span class="sub">Shipping bill, customs export</span></div><div class="amount">$120</div><div class="share">3%</div></div>
+      <div class="cost-row"><div class="item">Red Sea diversion / Cape routing<span class="sub">Bunker uplift + extended transit</span></div><div class="amount">$600</div><div class="share">13%</div></div>
+      <div class="cost-row"><div class="item">Destination THC (Houston)<span class="sub">USA port handling</span></div><div class="amount">$350</div><div class="share">7%</div></div>
+      <div class="cost-row"><div class="item">ISF, AES, customs broker (US)<span class="sub">Importer Security Filing, AES, broker</span></div><div class="amount">$300</div><div class="share">6%</div></div>
+      <div class="cost-row"><div class="item">Drayage to warehouse<span class="sub">Container to inland delivery</span></div><div class="amount">$200</div><div class="share">4%</div></div>
+      <div class="cost-row total"><div class="item">Total landed cost<span class="sub">Excl. AD/CVD duties</span></div><div class="amount">$4,770</div><div class="share">100%</div></div>
+      <div class="cost-row" style="margin-top: 0.5rem;"><div class="item" style="font-size: 0.78rem; color: var(--ink-muted);">Cargo value (0.6 MW per FEU)</div><div class="amount" style="color: var(--ink-3);">~$120K</div><div class="share">—</div></div>
+      <div class="cost-row" style="border-top: 1px dotted var(--border);"><div class="item" style="font-size: 0.78rem; color: var(--ink-muted);">Freight as % of cargo value</div><div class="amount" style="color: var(--ink-3);">~4%</div><div class="share">—</div></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Key insight:</strong> For high-value cells, freight is just 1% of cargo value — small in absolute terms but predictable. For lower-value bulky products like solar glass, frames, and EVA film, freight can reach 30-40% of cargo value — making rate certainty <em>strategically critical</em>, not just a savings item.
+  </div>
+
+  <hr class="divider">
+
+  <h3>What changes with a long-term contract</h3>
+
+  <div class="insight-grid">
+    <div class="insight-card">
+      <div class="insight-num">15-20%</div>
+      <div class="insight-title">Direct Rate Savings</div>
+      <div class="insight-detail">Volume commitment unlocks priced-in carrier discount. Reported savings range of 15-20% on procured freight (Freightos Pricing Strategy Playbook) <span class="est-badge">EST</span>.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">±5%</div>
+      <div class="insight-title">Volatility Compression</div>
+      <div class="insight-detail">Contracts cap surcharge variance through index-link clauses. Spot lanes routinely see ±25-40% swings within a single quarter <span class="est-badge">EST</span>.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">100%</div>
+      <div class="insight-title">Capacity Guarantee</div>
+      <div class="insight-detail">No rolled containers during peak windows. During pre-Diwali / pre-CNY / pre-ALMM-deadline rush periods, spot capacity disappears — contract slots are held.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">3-5%</div>
+      <div class="insight-title">Working Capital Gain</div>
+      <div class="insight-detail">Predictable freight enables better landed-cost forecasting, tighter inventory, lower safety stock. Indirect but quantifiable benefit <span class="est-badge">EST</span>.</div>
+    </div>
+  </div>
+
+  <h3>Where long-term contracts <em>don't</em> work</h3>
+  <p>Not every solar trade flow fits a contract. Three patterns disqualify a lane:</p>
+
+  <ul class="bullet-list">
+    <li><strong>Episodic / project cargo</strong> (central inverters, manufacturing equipment, transformers) — volumes arrive in capex-cycle waves, not steady annual streams. Better handled as project-cargo bookings.</li>
+    <li><strong>Volatile origin choice</strong> — if the shipper is still arbitraging China vs. Vietnam vs. Malaysia each quarter based on ADD developments, a single-origin contract can't keep up. Bilateral / multi-origin contracts add complexity.</li>
+    <li><strong>Sub-scale buyers</strong> — below ~500-1,000 TEU per year per lane, contract administration costs outweigh rate savings. Better routed via consolidator / NVOCC at near-spot pricing.</li>
+    <li><strong>Time-sensitive / one-off cargo</strong> — emergency replacement parts, sample modules, repair shipments — these need air freight or priority spot, not contract slots.</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>The contract-stacking play — back-to-back economics</h3>
+  <p>The most efficient way to capture this opportunity is to lock in <strong>both sides</strong> of the transaction. Carrier-side: 3-year volume commitment to one or two ocean carriers. Shipper-side: 1-year rolling commitments from solar importers/exporters. The intermediating logistics provider captures the spread — and absorbs minimal mismatch risk if both contracts are <em>index-linked</em> to the same benchmark (Drewry WCI or Freightos FBX).</p>
+
+  <div class="contract-diagram">
+    <div class="diagram-node">
+      <div class="role">Vessel Operator</div>
+      <div class="name">Maersk / MSC / CMA CGM</div>
+      <div class="detail">3-yr volume commit · 5,000-10,000 TEU/yr · index-linked rate</div>
+    </div>
+    <div class="diagram-flow">
+      <span>3-yr Carrier Contract</span>
+      <div class="arrow-line"></div>
+      <span>1-yr Shipper Contract</span>
+    </div>
+    <div class="diagram-node center">
+      <div class="role">Intermediary</div>
+      <div class="name">Adani Logistics Ltd.</div>
+      <div class="detail">Captures spread · holds capacity · adds port + ICD + customs</div>
+    </div>
+    <div class="diagram-flow">
+      <span>$300/FEU spread<span class="est-badge">EST</span></span>
+      <div class="arrow-line"></div>
+      <span>~15% discount to spot</span>
+    </div>
+    <div class="diagram-node">
+      <div class="role">Solar Shipper</div>
+      <div class="name">Adani Solar / Waaree / Reliance</div>
+      <div class="detail">1-yr rolling commit · fixed spread vs. index · capacity guaranteed</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Why this structure works:</strong> If spot rates rise, both contracts adjust upward via index linkage — the intermediary's $300/FEU spread holds. If spot rates fall, both contracts fall together — spread still holds. The intermediary takes <em>spread risk</em> (small, hedgeable) instead of <em>directional rate risk</em> (large, unhedgeable).
+  </div>
+
+  <p>Without the index linkage, this play is dangerous. The intermediary would be exposed to the 2022→2024 collapse pattern (rates fell 70%; anyone holding fixed carrier contracts at peak rates was crushed). With index linkage, that risk shifts to the carrier — who has the balance sheet to absorb it.</p>
+</section>
+
+<!-- ============ TAB 8: ALL BUSINESS CASE ============ -->
+<section class="tab-panel" id="all-play">
+  <div class="section-kicker">§ 08 / Adani Logistics — Business Case</div>
+  <h2 class="section-title">Adani Logistics is structurally <em>advantaged</em> to win this play.</h2>
+  <p class="section-intro">Adani Logistics Ltd entered the global freight forwarding business in Q4 FY25, hiring a 14-year Maersk veteran to lead the build. APSEZ controls 45.5% of India's container handling. Adani Solar is the largest single solar exporter from India. The Mundra cluster sits at the centre of every priority lane in this report. Of every player who could capture solar's containerised trade, no one is better positioned.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card accent">
+      <div class="stat-label">APSEZ Container Market Share</div>
+      <div class="stat-value">45.5<span class="unit">%</span></div>
+      <div class="stat-context">Of India's port-handled containers — captive starting point</div>
+    </div>
+    <div class="stat-card teal">
+      <div class="stat-label">H1 FY26 Logistics Revenue</div>
+      <div class="stat-value">₹2,224<span class="unit">Cr</span></div>
+      <div class="stat-context">+92% YoY; RoCE up to 9% from 6% in FY25</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">Container Trains in Operation</div>
+      <div class="stat-value">47</div>
+      <div class="stat-context">India's largest private train operator — instant hinterland reach</div>
+    </div>
+    <div class="stat-card sage">
+      <div class="stat-label">FF Business Status</div>
+      <div class="stat-value">Q4<span class="unit">FY25 launch</span></div>
+      <div class="stat-context">Just-launched freight forwarding — solar timing is perfect</div>
+    </div>
+  </div>
+
+  <h3>Why this is Adani Logistics' opportunity, not Maersk's or DHL's</h3>
+  <p>Seventy percent of India's freight forwarding market is held by multinationals (DHL, DB Schenker, Kuehne+Nagel, Nippon Express). They have scale and global networks. But for solar — and especially for Mundra-routed solar — Adani Logistics has four structural advantages that no MNC forwarder can replicate:</p>
+
+  <ul class="bullet-list">
+    <li><strong>Captive port at the heart of the trade.</strong> Mundra is already the #1 destination for India's cell, wafer and BoM imports — and the #1 origin for module exports to USA. APSEZ controls the berth, the THC pricing, and the dwell/demurrage clock.</li>
+    <li><strong>Captive customer in Adani Solar.</strong> Mundra Solar PV Ltd + Mundra Solar Energy Ltd combined are India's largest solar module exporter and the single biggest user of Mundra outbound to USA. That alone is an anchor 4,000-7,000 TEU/yr book.</li>
+    <li><strong>Owned hinterland infrastructure.</strong> 47 container trains, MMLPs, ICDs, bonded warehousing, FTWZ — ALL can offer port-to-factory-gate SLAs that pure forwarders cannot guarantee.</li>
+    <li><strong>Existing carrier relationships.</strong> APSEZ already negotiates with every major carrier for berth allocation. Translating that into preferred slot rates for ALL-anchored cargo is a relationship layer the MNCs do not have.</li>
+  </ul>
+
+  <hr class="divider">
+
+  <h3>Best route + material combinations for ALL — the prioritisation matrix</h3>
+  <p>Not every lane × material combination is equally attractive. The matrix below scores each on three axes: TEU volume, margin potential (a function of handling complexity and buyer concentration), and forward visibility. Priority 1 combinations should be locked in first; Priority 3 are worth pursuing only after the top tier is captured.</p>
+
+  <div class="combo-matrix">
+    <table class="combo-table">
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Lane</th>
+          <th>Material</th>
+          <th>Container & SOP</th>
+          <th>Annual TEU<span class="est-badge">EST</span></th>
+          <th>Margin Potential</th>
+          <th>Buyer Concentration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="priority-1">
+          <td><span class="priority-pill high">P-1</span></td>
+          <td><span class="lane-name">Shanghai/Ningbo → Mundra<span class="sub">15-24 day transit</span></span></td>
+          <td>Solar cells (HS 8541 4200)</td>
+          <td>40HQ standard · pallet-stacked · climate-stable</td>
+          <td>10-15K</td>
+          <td>High ($300-450/FEU spread)</td>
+          <td>~6 buyers (Adani, Waaree, Premier, Reliance, Tata, ReNew)</td>
+        </tr>
+        <tr class="priority-1">
+          <td><span class="priority-pill high">P-1</span></td>
+          <td><span class="lane-name">Mundra → Houston/Newark/Savannah<span class="sub">31-50 day transit</span></span></td>
+          <td>Solar modules (HS 8541 4300)</td>
+          <td>40HQ · timber-cradled · stack-rated</td>
+          <td>8-14K</td>
+          <td>High ($400-600/FEU spread)</td>
+          <td>~5 shippers (Adani Solar dominant)</td>
+        </tr>
+        <tr class="priority-1">
+          <td><span class="priority-pill high">P-1</span></td>
+          <td><span class="lane-name">Shanghai/Ningbo → Mundra<span class="sub">18-24 day transit</span></span></td>
+          <td>Silicon wafers (HS 3818 0010)</td>
+          <td>20ft cushioned · vibration-sensitive · climate-control optional</td>
+          <td>2-4K</td>
+          <td>Very High ($500-700/FEU spread — fragile premium)</td>
+          <td>~4 buyers (Reliance, Adani, Premier, Waaree)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill high">P-1</span></td>
+          <td><span class="lane-name">Shanghai/Ningbo → Mundra<span class="sub">18-24 day transit · Class 9</span></span></td>
+          <td>BESS / Li-ion cells (HS 8507 6000)</td>
+          <td>20ft purpose-built · IMDG Class 9 hazmat · MSDS + UN38.3 docs · DG declaration</td>
+          <td>1-3K (rising to 5-10K by 2027)</td>
+          <td>Very High ($600-900/FEU — hazmat premium 30-50%)</td>
+          <td>~4 buyers (Adani Green, ACME, ReNew, Tata Power)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill med">P-2</span></td>
+          <td><span class="lane-name">Shanghai/Ningbo → Nhava Sheva<span class="sub">14-18 day transit</span></span></td>
+          <td>Cells + BoM mix</td>
+          <td>40HQ · pallet-stacked · standard</td>
+          <td>8-15K</td>
+          <td>Medium ($250-350/FEU)</td>
+          <td>~8 buyers (Maharashtra/TN clusters)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill med">P-2</span></td>
+          <td><span class="lane-name">Tianjin/Shanghai/Pasir Gudang → Mundra/Pipavav<span class="sub">7-24 day transit</span></span></td>
+          <td>Solar glass (HS 7007 1900)</td>
+          <td>20ft (heavy) or 40ft flat-rack · A-frame crating · weight-restricted load</td>
+          <td>12-18K</td>
+          <td>Low–Med ($120-200/FEU — low value cargo)</td>
+          <td>~5 buyers (Indian module makers)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill med">P-2</span></td>
+          <td><span class="lane-name">Hai Phong/HCMC → Mundra/JNPT<span class="sub">8-18 day transit</span></span></td>
+          <td>Vietnamese cells + modules</td>
+          <td>40HQ standard · pallet-stacked</td>
+          <td>6-12K</td>
+          <td>Medium ($250-400/FEU)</td>
+          <td>~6 buyers (FTA-driven)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill med">P-2</span></td>
+          <td><span class="lane-name">Shanghai/Ningbo → Mundra<span class="sub">20-25 day transit</span></span></td>
+          <td>EVA / POE encapsulant film (HS 3920 1019)</td>
+          <td>40HQ · roll-stacked · moisture-protected</td>
+          <td>3-5K</td>
+          <td>Medium ($200-300/FEU)</td>
+          <td>~5 buyers</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill med">P-2</span></td>
+          <td><span class="lane-name">Various → Mundra/JNPT<span class="sub">15-24 day transit</span></span></td>
+          <td>Aluminium frames (HS 7604 2990)</td>
+          <td>40ft flat-rack · extrusion crates · over-length handling</td>
+          <td>8-12K</td>
+          <td>Low–Med ($150-250/FEU — bulky low-value)</td>
+          <td>~6 buyers</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill low">P-3</span></td>
+          <td><span class="lane-name">Port Klang/Penang → Chennai/Ennore<span class="sub">7-10 day transit</span></span></td>
+          <td>Malaysian cells + glass</td>
+          <td>40HQ · standard</td>
+          <td>3-5K</td>
+          <td>Medium ($200-300/FEU)</td>
+          <td>~4 buyers (South India)</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill low">P-3</span></td>
+          <td><span class="lane-name">Shanghai → Mundra<span class="sub">project cargo</span></span></td>
+          <td>Polysilicon (HS 2804 6100)</td>
+          <td>20ft · UN drums · super-sacks · single-customer (Adani/Reliance)</td>
+          <td>1-2K</td>
+          <td>Medium ($200-300/TEU)</td>
+          <td>~2 buyers — captive opportunity</td>
+        </tr>
+        <tr>
+          <td><span class="priority-pill low">P-3</span></td>
+          <td><span class="lane-name">Shanghai/Hefei → Mundra<span class="sub">project cargo</span></span></td>
+          <td>Central inverters (HS 8504 4040)</td>
+          <td>40ft breakbulk / flat-rack · OOG handling · project-coded</td>
+          <td>0.5-1K equivalent</td>
+          <td>High per shipment ($800-1,500 — project premium)</td>
+          <td>~3 buyers (utility-scale projects)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <strong>Handling SOP highlights:</strong> The Class 9 BESS lane needs IMDG-trained carriers, separate stowage, DG declarations and limits on container-stack height — most pure forwarders cannot offer this. The wafer lane needs vibration-controlled stowage (no engine-room proximity, weatherdeck preferred). Flat-rack frames need wind-rated lashing. These handling SOPs are precisely the kind of complexity that justifies premium spread — and excludes opportunistic competitors.
+  </div>
+
+  <hr class="divider">
+
+  <h3>TAM — the total opportunity for Adani Logistics</h3>
+  <p>The model below sizes the addressable revenue across all priority solar lanes at maturity (3-5 years), assuming ALL captures a credible market share. Numbers are <strong>illustrative</strong> — actual realization depends on win rates against MNC forwarders.</p>
+
+  <div class="tam-waterfall">
+    <div class="tam-row">
+      <div class="lane-label">P-1 Shanghai/Ningbo → Mundra (Cells)<span class="sub">12K TEU × $2,000 all-in × 50% capture</span></div>
+      <div class="bar-wrap"><div class="bar" style="width: 35%;"></div></div>
+      <div class="value">$12M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-1 Mundra → USA (Modules)<span class="sub">11K TEU × $4,800 all-in × 60% capture (Adani Solar captive)</span></div>
+      <div class="bar-wrap"><div class="bar" style="width: 90%;"></div></div>
+      <div class="value">$32M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-1 Shanghai/Ningbo → Mundra (Wafers)<span class="sub">3K TEU × $2,200 × 40% capture</span></div>
+      <div class="bar-wrap"><div class="bar" style="width: 8%;"></div></div>
+      <div class="value">$2.6M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-1 Shanghai → Mundra (BESS Class 9)<span class="sub">5K TEU avg (today→2027) × $4,500 × 50% capture</span></div>
+      <div class="bar-wrap"><div class="bar amber-bar" style="width: 25%;"></div></div>
+      <div class="value">$11M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-2 Shanghai/Ningbo → JNPT (Cells+BoM)<span class="sub">11K TEU × $2,000 × 25% capture (non-captive port)</span></div>
+      <div class="bar-wrap"><div class="bar teal-bar" style="width: 22%;"></div></div>
+      <div class="value">$5.5M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-2 Solar Glass + Aluminium Frames<span class="sub">25K TEU × $1,200 × 30% capture</span></div>
+      <div class="bar-wrap"><div class="bar teal-bar" style="width: 25%;"></div></div>
+      <div class="value">$9M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-2 Vietnam/Malaysia inbound<span class="sub">9K TEU × $1,800 × 30% capture</span></div>
+      <div class="bar-wrap"><div class="bar teal-bar" style="width: 15%;"></div></div>
+      <div class="value">$5M revenue</div>
+    </div>
+    <div class="tam-row">
+      <div class="lane-label">P-2/P-3 EVA, Frames, Polysilicon, Inverters<span class="sub">Specialty lanes combined</span></div>
+      <div class="bar-wrap"><div class="bar amber-bar" style="width: 12%;"></div></div>
+      <div class="value">$4M revenue</div>
+    </div>
+    <div class="tam-row total">
+      <div class="lane-label">Total addressable ocean freight revenue<span class="sub">At maturity (3-5 years out)</span></div>
+      <div class="bar-wrap"><div class="bar" style="width: 100%;"></div></div>
+      <div class="value">~$80-120M</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Adjacent revenue stack:</strong> The numbers above are ocean freight pass-through only. Adani Logistics captures additional revenue on every TEU through THC at Mundra (already going to APSEZ), customs brokerage, CFS storage, ICD movement, inland trucking, FTWZ warehousing, and value-added services. <strong>This adjacent stack typically adds 25-35% to the headline freight revenue</strong>, taking the total opportunity to <strong>$105-155M annually at maturity</strong> <span class="est-badge">EST</span>.
+  </div>
+
+  <h3>What Adani Logistics actually <em>keeps</em> — per-TEU and aggregate</h3>
+
+  <p>Headline revenue is not the right metric. The two questions that matter: (1) what's the EBIT per TEU? (2) how does that aggregate against ALL's existing business base?</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Per-FEU Economics by Lane</div>
+      <div class="chart-subtitle">All-in revenue, carrier COGS, and ALL net spread <span class="est-badge">EST</span></div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="perTeuChart"></canvas></div>
+  </div>
+
+  <div class="cost-buildup">
+    <div class="cost-buildup-header">
+      <div>
+        <h4>Mature-state P&L estimate — Solar trade vertical</h4>
+        <div class="lane-tag" style="margin-top: 0.25rem;">All priority lanes · 3-5 year horizon · indicative <span class="est-badge">EST</span></div>
+      </div>
+    </div>
+    <div class="cost-row"><div class="item">Ocean freight revenue (gross)<span class="sub">Sum of capture across P-1 + P-2 + P-3 lanes</span></div><div class="amount">$80-120M</div><div class="share">~75%</div></div>
+    <div class="cost-row"><div class="item">Adjacent revenue (THC, CFS, customs, ICD, trucking)<span class="sub">Pass-through plus margin layers</span></div><div class="amount">$25-35M</div><div class="share">~25%</div></div>
+    <div class="cost-row total"><div class="item">Total revenue<span class="sub">~₹875-1,290 Cr</span></div><div class="amount">$105-155M</div><div class="share">100%</div></div>
+    <div class="cost-row" style="margin-top: 1rem;"><div class="item">Carrier COGS (pass-through)<span class="sub">~75% of ocean freight revenue</span></div><div class="amount">($60-90M)</div><div class="share">—</div></div>
+    <div class="cost-row"><div class="item">Adjacent stack cost-of-service<span class="sub">~65% of adjacent revenue</span></div><div class="amount">($16-22M)</div><div class="share">—</div></div>
+    <div class="cost-row"><div class="item">Operating costs (sales, ops, tech, working capital)<span class="sub">~50% of remaining gross profit</span></div><div class="amount">($14-21M)</div><div class="share">—</div></div>
+    <div class="cost-row savings"><div class="item">EBIT contribution<span class="sub">Realistic NVOCC + adjacent margins post-build</span></div><div class="amount">$14-22M</div><div class="share">~₹115-180 Cr</div></div>
+    <div class="cost-row" style="margin-top: 1rem; border-top: 1px dotted var(--border);"><div class="item" style="font-size: 0.82rem;">As % of APSEZ FY26 logistics revenue (~₹3,500-4,500 Cr est.)<span class="sub">Meaningful at standalone level for a Q4 FY25 launch</span></div><div class="amount">20-30%</div><div class="share">—</div></div>
+    <div class="cost-row" style="border-bottom: none; padding-top: 0.4rem;"><div class="item" style="font-size: 0.82rem;">As % of APSEZ FY26 total revenue (₹36,000-38,000 Cr guidance)<span class="sub">Modest at corporate level — but high-growth segment</span></div><div class="amount">~3%</div><div class="share">—</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Shipper-side gain — worked examples</h3>
+  <p>What does this look like from the customer's side? Three illustrative profiles, each rated against a credible Indian solar shipper today.</p>
+
+  <div class="chart-grid-2">
+    <div class="cost-buildup">
+      <div class="cost-buildup-header">
+        <div>
+          <h4>Waaree-scale module exporter</h4>
+          <div class="lane-tag" style="margin-top: 0.25rem;">Mundra/JNPT → USA · ~1,200 FEU/yr</div>
+        </div>
+      </div>
+      <div class="cost-row"><div class="item">Annual freight spend at spot mid-range<span class="sub">1,200 FEU × $4,800 all-in</span></div><div class="amount">$5.8M</div><div class="share">—</div></div>
+      <div class="cost-row"><div class="item">Volatility band (peak vs trough)<span class="sub">±25% on FEU rate</span></div><div class="amount">$4.3-7.2M</div><div class="share">—</div></div>
+      <div class="cost-row"><div class="item">Same volume on contract (15% saving)</div><div class="amount">$4.9M</div><div class="share">—</div></div>
+      <div class="cost-row savings"><div class="item">Annual direct saving<span class="sub">Plus working capital benefit ~$100K</span></div><div class="amount">$900K+</div><div class="share">15%</div></div>
+    </div>
+
+    <div class="cost-buildup">
+      <div class="cost-buildup-header">
+        <div>
+          <h4>Mid-size cell importer (Premier/ReNew scale)</h4>
+          <div class="lane-tag" style="margin-top: 0.25rem;">Shanghai → Mundra · ~1,500 FEU/yr</div>
+        </div>
+      </div>
+      <div class="cost-row"><div class="item">Annual freight spend at spot<span class="sub">1,500 FEU × $3,130 all-in</span></div><div class="amount">$4.7M</div><div class="share">—</div></div>
+      <div class="cost-row"><div class="item">Volatility band<span class="sub">±30% during disruptions</span></div><div class="amount">$3.3-6.1M</div><div class="share">—</div></div>
+      <div class="cost-row"><div class="item">Same volume on contract (15% saving)</div><div class="amount">$4.0M</div><div class="share">—</div></div>
+      <div class="cost-row savings"><div class="item">Annual direct saving<span class="sub">Plus assured capacity through ALMM-II rush</span></div><div class="amount">$700K+</div><div class="share">15%</div></div>
+    </div>
+  </div>
+
+  <div class="cost-buildup">
+    <div class="cost-buildup-header">
+      <div>
+        <h4>BESS developer (ACME / Adani Green scale)</h4>
+        <div class="lane-tag" style="margin-top: 0.25rem;">Shanghai → Mundra · Class 9 hazmat · ~600 TEU/yr today, 2,000+ by 2027</div>
+      </div>
+    </div>
+    <div class="cost-row"><div class="item">Annual freight spend at spot<span class="sub">600 TEU × $4,500 (hazmat-loaded)</span></div><div class="amount">$2.7M</div><div class="share">—</div></div>
+    <div class="cost-row"><div class="item">Hazmat surcharge spot premium<span class="sub">30-50% above standard freight per industry benchmark</span></div><div class="amount">$0.8-1.4M</div><div class="share">—</div></div>
+    <div class="cost-row"><div class="item">Contract structure value<span class="sub">Stable Class 9 allocation; no rolled DG containers</span></div><div class="amount">Priceless</div><div class="share">—</div></div>
+    <div class="cost-row savings"><div class="item">Annual saving plus capacity guarantee<span class="sub">DG capacity scarcity makes this the highest-value lane for the shipper</span></div><div class="amount">$400K+ direct + capacity</div><div class="share">15-20%</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>Implementation roadmap</h3>
+
+  <div class="route-cards">
+    <div class="route-card">
+      <div class="route-num">Q1</div>
+      <div>
+        <div class="route-tag">Foundation · Months 1-3</div>
+        <div class="route-path">Anchor Adani Solar's Mundra → USA export lane</div>
+        <p class="route-detail">Negotiate first 3-year carrier contract on Mundra → Houston / Port Everglades / Newark with a single anchor carrier. Use Adani Solar's historical shipment volume as committed volume floor. Target 5,000-7,000 FEU/yr.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-num">Q2</div>
+      <div>
+        <div class="route-tag">Expansion · Months 4-6</div>
+        <div class="route-path">Add Shanghai/Ningbo → Mundra cell lane</div>
+        <p class="route-detail">Begin selling 1-year rolling contracts to Waaree, Premier, Tata Power, ReNew for cell imports. Index-linked spread. Target 3,000-5,000 FEU/yr in Year 1, growing to 8,000+ at maturity.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-num">Q3</div>
+      <div>
+        <div class="route-tag">Specialty · Months 7-9</div>
+        <div class="route-path">Class 9 BESS capacity build-out</div>
+        <p class="route-detail">Secure dedicated DG-rated allocation from 1-2 carriers (Maersk and CMA CGM are best positioned for IMDG compliance at scale). Approach Adani Green, ACME, ReNew with multi-year supply commitment. Capacity build-out before 2027 scarcity hits.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-num">Q4</div>
+      <div>
+        <div class="route-tag">Volume layer · Months 10-12</div>
+        <div class="route-path">Solar glass and frames bulk play</div>
+        <p class="route-detail">Pasir Gudang → Mundra/Pipavav volume lane for ADD-redirected solar glass. Lower margin per FEU but high volume — perfect for cubic-meter rate contracts. Anchor with Borosil, Vishakha, top Indian module makers.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Key risks to the plan</h3>
+  <table class="data-table">
+    <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Carrier rate moves against contracted spread</td><td>Medium</td><td>Strict index-linking; no fixed-rate exposure</td></tr>
+      <tr><td>Solar import volumes collapse on policy shock</td><td>Medium</td><td>Diversify across import (cells) and export (modules) — they don't move together</td></tr>
+      <tr><td>MNC forwarders (DHL/DB Schenker) defensive response</td><td>High</td><td>Compete on integrated SLA, not pure freight rate — leverage port + ICD ownership</td></tr>
+      <tr><td>BESS hazmat compliance failure</td><td>Low–Medium</td><td>Hire DG-certified ops staff; build SOP early; partner with one IMDG-leader carrier</td></tr>
+      <tr><td>US tariff escalation collapses module export lane</td><td>Medium</td><td>Module exports are diversifying to EU, Australia, Africa — pivot capacity if needed</td></tr>
+      <tr><td>Customer concentration (Adani Solar = anchor)</td><td>Medium</td><td>Target external buyer share &gt;60% of book by Year 3</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <p class="pull-quote">"$14-22 million in incremental annual EBIT is not transformational at the APSEZ corporate level — but it is a 20-30% lift on Adani Logistics' standalone P&L, in a segment where growth and margin both compound for the next 5-7 years. That is precisely the right shape of bet for a newly-launched freight forwarding business with everything to prove."</p>
+</section>
+
+<!-- ============ TAB 9: SOURCES ============ -->
+<section class="tab-panel" id="sources">
+  <div class="section-kicker">§ 09 / Methodology</div>
+  <h2 class="section-title">Data confidence & <em>sources</em>.</h2>
+  <p class="section-intro">What's officially measured vs. what's estimated, and where to subscribe for shipment-level data when the time comes to negotiate.</p>
+
+  <div class="callout warning">
+    <strong>Revision history — v3 (post sanity-check):</strong> Earlier drafts of this report (v1, v2) carried TEU estimates that were 30-50% too high on multiple lanes. The over-estimation came from three sources: (1) using 0.5-0.7 MW per 40HC for modules when industry-standard packing is 0.4-0.5 MW/FEU; (2) applying Mundra-specific lane labels to all-India totals (especially on module exports — Adani Solar's Mundra capacity is ~3-4 GW, not all of India's ~5.8 GW export volume); (3) overstating capture rates against MNC forwarders. Corrected estimates in this v3 are tighter and more conservative. Total ocean-freight TAM moved from $160M → ~$80-120M; EBIT estimate moved from $45-70M → $14-22M. The strategic logic is unchanged but the dollar magnitudes are now defensible.
+  </div>
+
+  <div class="callout">
+    <strong>Confidence note:</strong> All <span class="est-badge">EST</span>-tagged figures in this report are calculated estimates derived from public value data ÷ industry-standard container loading factors — not measured customs data. Port-share percentages, TEU/FEU per lane, MW-per-container ratios, and forward projections are estimates. Official quarterly $-value totals from India's Department of Commerce, Mercom EXIM Tracker, MNRE and DGTR are not tagged — those are sourced.
+  </div>
+
+  <h3>Recommended Ongoing Data Subscriptions</h3>
+  <table class="data-table">
+    <thead><tr><th>Source</th><th>Use Case</th><th>Cadence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Mercom India Solar EXIM Tracker</strong></td><td>Quarterly origin/value breakdown</td><td>Quarterly</td></tr>
+      <tr><td><strong>JMK Research India RE Update</strong></td><td>Capacity, tendering, BESS</td><td>Quarterly</td></tr>
+      <tr><td><strong>Bridge to India</strong></td><td>Market analytics & policy</td><td>Quarterly</td></tr>
+      <tr><td><strong>IEEFA / CEEW reports</strong></td><td>Trade, exports, policy think-tank</td><td>Periodic</td></tr>
+      <tr><td><strong>Volza / Seair / ImportGenius</strong></td><td>Shipment-level: port, importer, supplier, container no.</td><td>Daily</td></tr>
+      <tr><td><strong>MNRE press releases (pib.gov.in)</strong></td><td>ALMM updates, policy</td><td>Weekly</td></tr>
+      <tr><td><strong>DGTR notifications</strong></td><td>Anti-dumping rulings</td><td>Periodic</td></tr>
+      <tr><td><strong>Adani Ports investor updates</strong></td><td>Mundra/Pipavav/Hazira volumes</td><td>Quarterly</td></tr>
+      <tr><td><strong>OPIS APAC Solar Weekly</strong></td><td>Polysilicon, cell, module pricing</td><td>Weekly</td></tr>
+      <tr><td><strong>Drewry Container Census + CFRI</strong></td><td>Freight rate moves</td><td>Weekly</td></tr>
+      <tr><td><strong>Linerlytica / Sea-Intelligence</strong></td><td>Capacity and reliability</td><td>Weekly</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Sources Used in This Report</h3>
+  <p>India Department of Commerce (Export-Import Data Bank) · Mercom India (Q1-Q4 2024 and Q1-Q4 2025 Solar EXIM analyses) · JMK Research · IEEFA · CEEW · OPIS · BloombergNEF · Wood Mackenzie · IEA Solar PV Special Report · DGTR notifications (solar glass ADD Dec 2024, aluminium frames ADD Sep 2024, solar cells Final Findings Sep 2025) · pv-magazine India and PV Tech · Volza, Seair, ImportGenius (shipment-level samples) · Adani Ports disclosures · MNRE press releases via PIB.gov.in · ORF America · India-Briefing.</p>
+
+  <div class="callout warning">
+    <strong>Critical gap:</strong> Monthly TEU-per-port data at the product level is not publicly published. For real per-month, per-port, per-importer granularity (essential for actual contract negotiation), a Volza, Seair, or Mercom EXIM Tracker subscription is required. Plan ~$3,000-$10,000/yr for a useful data stack.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="serif">India Solar Trade — Research Report</span>
+    <p>Compiled May 2026 from official Indian government data, industry trackers, and shipment-level samples. For research and contracting-strategy reference only — not investment advice.</p>
+    <p style="margin-top: 1.5rem; opacity: 0.7; font-size: 0.78rem;">All figures tagged <span class="est-badge" style="display: inline-block;">EST</span> are calculated estimates. Verify against current Mercom / Volza / Seair data before contract negotiation.</p>
+  </div>
+</footer>
+
+<script>
+// ===== Tab switching =====
+const tabBtns = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-panel');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    tabBtns.forEach(b => b.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ===== Product accordion =====
+function toggleProduct(el) {
+  el.classList.toggle('open');
+}
+
+// ===== Chart.js defaults =====
+Chart.defaults.font.family = "'Public Sans', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#324554';
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 14;
+Chart.defaults.plugins.legend.labels.font = { family: "'Public Sans', sans-serif", size: 12 };
+
+const palette = {
+  rust: '#B94A0E',
+  rustSoft: '#E58454',
+  amber: '#C68A2C',
+  teal: '#1F5A6F',
+  tealSoft: '#5994A6',
+  sage: '#5C7C5F',
+  crimson: '#94303B',
+  ink: '#0E1F2C',
+  ink2: '#324554',
+  ink3: '#6B7A85',
+  border: '#E0D5BD'
+};
+
+// ===== Chart 1: FY24 vs Q4 2025 composition flip =====
+new Chart(document.getElementById('flipChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY24 (Apr 23-Mar 24)', 'Q4 2025 (Oct-Dec 25)'],
+    datasets: [
+      { label: 'Modules', data: [70, 20.8], backgroundColor: palette.teal, borderRadius: 2, barPercentage: 0.55 },
+      { label: 'Cells', data: [30, 79.2], backgroundColor: palette.rust, borderRadius: 2, barPercentage: 0.55 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { stacked: true, max: 100, grid: { color: '#ECE4D0' }, ticks: { callback: v => v + '%' } },
+      y: { stacked: true, grid: { display: false } }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.x + '%' } }
+    }
+  }
+});
+
+// ===== Chart 2: Q4 2025 origin donut =====
+new Chart(document.getElementById('originChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['China', 'Vietnam', 'Thailand', 'Indonesia', 'Malaysia', 'Others'],
+    datasets: [{
+      data: [59.6, 10.1, 8.6, 6.1, 6.0, 9.6],
+      backgroundColor: [palette.rust, palette.teal, palette.amber, palette.sage, palette.crimson, palette.ink3],
+      borderWidth: 2,
+      borderColor: '#FFFFFF'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { position: 'right', align: 'center' },
+      tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + '%' } }
+    }
+  }
+});
+
+// ===== Chart 3: Quarterly imports - cells vs modules =====
+new Chart(document.getElementById('quarterlyChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 24', 'Q2 24', 'Q3 24', 'Q4 24', 'Q1 25', 'Q2 25', 'Q3 25', 'Q4 25'],
+    datasets: [
+      {
+        label: 'Modules ($M)',
+        data: [1580, 426, 540, 510, 480, 138, 320, 216],
+        borderColor: palette.teal,
+        backgroundColor: 'rgba(31, 90, 111, 0.08)',
+        tension: 0.3,
+        borderWidth: 2.5,
+        pointBackgroundColor: palette.teal,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        fill: true
+      },
+      {
+        label: 'Cells ($M)',
+        data: [420, 349, 446, 290, 580, 600, 680, 892],
+        borderColor: palette.rust,
+        backgroundColor: 'rgba(185, 74, 14, 0.08)',
+        tension: 0.3,
+        borderWidth: 2.5,
+        pointBackgroundColor: palette.rust,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        fill: true
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#ECE4D0' }, ticks: { callback: v => '$' + v + 'M' } }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.y + 'M' } }
+    }
+  }
+});
+
+// ===== Chart 4: Top routes by value =====
+new Chart(document.getElementById('routesChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      ['Route 1', 'Shanghai/Ningbo → Mundra', '(cells/wafers/BoM)'],
+      ['Route 2', 'Mundra → USA gateways', '(module exports)'],
+      ['Route 3', 'Shanghai/Ningbo → JNPT', '(modules + BoM)'],
+      ['Route 4', 'Vietnam → Mundra/JNPT', '(FTA route-around)'],
+      ['Route 5', 'China/Malaysia → Mundra/Pipavav', '(glass/frames/BoM)'],
+      ['Route 6', 'China → Mundra/Krishnapatnam', '(BESS Class 9)'],
+      ['Route 7', 'Malaysia → Chennai/Ennore', '(specialty cells/glass)']
+    ],
+    datasets: [
+      { label: 'Low Estimate ($B)', data: [1.0, 0.8, 0.4, 0.3, 0.3, 0.15, 0.3], backgroundColor: palette.tealSoft, borderRadius: 2 },
+      { label: 'High Estimate ($B)', data: [1.5, 1.5, 0.7, 0.6, 0.5, 0.4, 0.5], backgroundColor: palette.rust, borderRadius: 2 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { grid: { color: '#ECE4D0' }, ticks: { callback: v => '$' + v + 'B' } },
+      y: { grid: { display: false } }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.x + 'B' } }
+    }
+  }
+});
+
+// ===== Chart 5: Capacity vs demand =====
+new Chart(document.getElementById('capacityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Modules', 'Cells', 'Wafers/Ingots', 'Polysilicon'],
+    datasets: [
+      { label: 'Indian capacity (GW)', data: [210, 27, 5, 0], backgroundColor: palette.sage, borderRadius: 2 },
+      { label: 'Annual India demand at 40 GW/yr (GW)', data: [40, 44, 45, 50], backgroundColor: palette.rust, borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#ECE4D0' }, ticks: { callback: v => v + ' GW' } }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + ' GW' } }
+    }
+  }
+});
+
+// ===== Chart 6: TEU by route =====
+new Chart(document.getElementById('teuChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Shanghai/Ningbo → Mundra',
+      'Mundra → USA gateways',
+      'Shanghai/Ningbo → JNPT',
+      'Vietnam → Mundra/JNPT',
+      'China/MY → Mundra/Pipavav',
+      'China → Mundra/Krishnapatnam',
+      'Malaysia → Chennai/Ennore'
+    ],
+    datasets: [{
+      label: 'Annual TEU (high estimate)',
+      data: [15000, 14000, 15000, 12000, 35000, 3000, 5000],
+      backgroundColor: [
+        palette.rust,
+        palette.rust,
+        palette.teal,
+        palette.teal,
+        palette.amber,
+        palette.sage,
+        palette.tealSoft
+      ],
+      borderRadius: 2,
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { grid: { color: '#ECE4D0' }, ticks: { callback: v => (v/1000) + 'K' } },
+      y: { grid: { display: false } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.parsed.x.toLocaleString() + ' TEU' } }
+    }
+  }
+});
+
+// ===== Chart 7: Value density per FEU =====
+new Chart(document.getElementById('densityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Solar glass', 'Aluminium frames', 'EVA/POE film', 'Polysilicon', 'Solar modules', 'Wafers', 'Solar cells', 'Inverter (central)', 'BESS container', 'Li-ion cells (loose)'],
+    datasets: [{
+      label: 'High-end value per 40HC ($K)',
+      data: [25, 40, 50, 90, 180, 300, 400, 500, 600, 3000],
+      backgroundColor: [
+        palette.ink3, palette.ink3, palette.amber, palette.amber,
+        palette.teal, palette.teal, palette.rust,
+        palette.rust, palette.crimson, palette.crimson
+      ],
+      borderRadius: 2,
+      barPercentage: 0.65
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: 'logarithmic',
+        grid: { color: '#ECE4D0' },
+        ticks: { callback: v => '$' + v + 'K' }
+      },
+      y: { grid: { display: false } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.x.toLocaleString() + 'K per FEU' } }
+    }
+  }
+});
+
+// ===== Chart 8: Spot rate volatility (new tab 07) =====
+new Chart(document.getElementById('volatilityChart'), {
+  type: 'line',
+  data: {
+    labels: ['Oct 24', 'Nov 24', 'Dec 24', 'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25', 'Jul 25', 'Aug 25', 'Sep 25'],
+    datasets: [
+      {
+        label: 'Shanghai → Mundra (40HQ, all-in)',
+        data: [2400, 2200, 1900, 1750, 1850, 2050, 2200, 2400, 2300, 1900, 1850, 2000],
+        borderColor: palette.rust,
+        backgroundColor: 'rgba(185, 74, 14, 0.06)',
+        tension: 0.35,
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: palette.rust,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false
+      },
+      {
+        label: 'West India → Houston (40HQ, all-in)',
+        data: [3800, 3500, 2900, 2700, 2900, 3400, 3700, 4100, 3800, 3400, 3200, 3500],
+        borderColor: palette.teal,
+        backgroundColor: 'rgba(31, 90, 111, 0.06)',
+        tension: 0.35,
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: palette.teal,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false
+      },
+      {
+        label: 'West India → New York (40HQ, all-in)',
+        data: [2500, 2050, 2050, 2200, 2400, 2700, 2900, 3100, 2900, 2600, 2500, 2700],
+        borderColor: palette.amber,
+        backgroundColor: 'rgba(198, 138, 44, 0.06)',
+        tension: 0.35,
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: palette.amber,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      x: { grid: { display: false } },
+      y: {
+        grid: { color: '#ECE4D0' },
+        ticks: { callback: v => '$' + v.toLocaleString() }
+      }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: {
+        callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString() + '/FEU' }
+      }
+    }
+  }
+});
+
+// ===== Chart 9: Per-FEU economics by lane (new tab 08) =====
+new Chart(document.getElementById('perTeuChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      ['Mundra → USA', 'Modules'],
+      ['Shanghai → Mundra', 'Cells'],
+      ['Shanghai → Mundra', 'Wafers'],
+      ['Shanghai → Mundra', 'BESS Class 9'],
+      ['Shanghai → JNPT', 'Cells+BoM'],
+      ['China → Mundra', 'Solar Glass'],
+      ['Vietnam → Mundra', 'Cells+Modules']
+    ],
+    datasets: [
+      {
+        label: 'Carrier COGS ($)',
+        data: [3600, 1450, 1500, 3200, 1450, 950, 1300],
+        backgroundColor: palette.ink3,
+        stack: 'a',
+        borderRadius: 2
+      },
+      {
+        label: 'ALL operating costs ($)',
+        data: [700, 200, 250, 600, 200, 150, 200],
+        backgroundColor: palette.amber,
+        stack: 'a',
+        borderRadius: 2
+      },
+      {
+        label: 'ALL EBIT spread ($)',
+        data: [500, 350, 600, 800, 280, 180, 320],
+        backgroundColor: palette.rust,
+        stack: 'a',
+        borderRadius: 2
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        grid: { color: '#ECE4D0' },
+        ticks: { callback: v => '$' + v.toLocaleString() }
+      },
+      y: { stacked: true, grid: { display: false } }
+    },
+    plugins: {
+      legend: { position: 'bottom', align: 'start' },
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.dataset.label + ': $' + ctx.parsed.x.toLocaleString() + '/FEU'
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
